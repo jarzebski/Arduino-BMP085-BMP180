@@ -31,6 +31,34 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 bool BMP085::begin()
 {
+    Wire.begin();
+
+    // Check BMP085 REG CHIP_ID
+    if (fastRegister8(BMP085_REG_CHIP_ID) != 0x55)
+    {
+        return false;
+    }
+
+    readCalibrationData();
+
+    return true;
+}
+
+
+// Read calibration data
+void BMP085::readCalibrationData(void)
+{
+  ac1 = readRegister16(BMP085_REG_AC1);
+  ac2 = readRegister16(BMP085_REG_AC2);
+  ac3 = readRegister16(BMP085_REG_AC3);
+  ac4 = readRegister16(BMP085_REG_AC4);
+  ac5 = readRegister16(BMP085_REG_AC5);
+  ac6 = readRegister16(BMP085_REG_AC6);
+  b1 = readRegister16(BMP085_REG_B1);
+  b2 = readRegister16(BMP085_REG_B2);
+  mb = readRegister16(BMP085_REG_MB);
+  mc = readRegister16(BMP085_REG_MC);
+  md = readRegister16(BMP085_REG_MD);
 }
 
 // Write 8-bit to register

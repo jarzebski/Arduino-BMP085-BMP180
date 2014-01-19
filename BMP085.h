@@ -29,6 +29,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #define BMP085_ADDRESS                (0x77)
 
+#define BMP085_REG_CHIP_ID            (0xD0)
+#define BMP085_REG_SOFT_RESET         (0xE0)
+
 #define BMP085_REG_AC1                (0xAA)
 #define BMP085_REG_AC2                (0xAC)
 #define BMP085_REG_AC3                (0xAE)
@@ -51,10 +54,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 typedef enum
 {
-    BMP085_OSRS_ULTRA_HIGR_RES   = (0x03),
-    BMP085_OSRS_HIGH_RES         = (0x02),
-    BMP085_OSRS_STANDARD         = (0x01),
-    BMP085_OSRS_ULTRA_LOW_POWER  = (0x00)
+    BMP085_OSRS_ULTRA_HIGR_RES   = 0x03,
+    BMP085_OSRS_HIGH_RES         = 0x02,
+    BMP085_OSRS_STANDARD         = 0x01,
+    BMP085_OSRS_ULTRA_LOW_POWER  = 0x00
 } osrs_t;
 
 
@@ -64,6 +67,21 @@ class BMP085
 	bool begin(void);
 
     private:
+
+	int16_t ac1;
+	int16_t ac2;
+	int16_t ac3;
+	uint16_t ac4;
+	uint16_t ac5;
+	uint16_t ac6;
+	int16_t b1;
+	int16_t b2;
+	int16_t mb;
+	int16_t mc;
+	int16_t md;
+
+	void readCalibrationData(void);
+
 	void writeRegister8(uint8_t reg, uint8_t value);
 	uint8_t readRegister8(uint8_t reg);
 	uint8_t fastRegister8(uint8_t reg);
