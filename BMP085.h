@@ -47,24 +47,30 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define BMP085_REG_DATA               (0xF6)
 
 #define BMP085_CMD_MEASURE_TEMP       (0x2E) // Max conversion time 4.5ms
-#define BMP085_CMD_MEASURE_PRESSURE_0 (0x34) // Max conversion time 4.5ms (osrs = 0)
-#define BMP085_CMD_MEASURE_PRESSURE_1 (0x74) // Max conversion time 7.5ms (osrs = 1)
-#define BMP085_CMD_MEASURE_PRESSURE_2 (0xB4) // Max conversion time 13.5ms (osrs = 2)
-#define BMP085_CMD_MEASURE_PRESSURE_3 (0xF4) // Max conversion time 25.5ms (osrs = 3)
+#define BMP085_CMD_MEASURE_PRESSURE_0 (0x34) // Max conversion time 4.5ms (OSS = 0)
+#define BMP085_CMD_MEASURE_PRESSURE_1 (0x74) // Max conversion time 7.5ms (OSS = 1)
+#define BMP085_CMD_MEASURE_PRESSURE_2 (0xB4) // Max conversion time 13.5ms (OSS = 2)
+#define BMP085_CMD_MEASURE_PRESSURE_3 (0xF4) // Max conversion time 25.5ms (OSS = 3)
 
 typedef enum
 {
-    BMP085_OSRS_ULTRA_HIGR_RES   = 0x03,
-    BMP085_OSRS_HIGH_RES         = 0x02,
-    BMP085_OSRS_STANDARD         = 0x01,
-    BMP085_OSRS_ULTRA_LOW_POWER  = 0x00
-} osrs_t;
+    BMP085_OSS_ULTRA_HIGH_RES   = 0x03,
+    BMP085_OSS_HIGH_RES         = 0x02,
+    BMP085_OSS_STANDARD         = 0x01,
+    BMP085_OSS_ULTRA_LOW_POWER  = 0x00
+} oss_t;
 
 
 class BMP085
 {
     public:
-	bool begin(void);
+	bool begin(oss_t oss = BMP085_OSS_HIGH_RES);
+
+	void setOversampling(oss_t oss);
+	oss_t getOversampling(void);
+
+	uint16_t readRawTemperature(void);
+	uint32_t readRawPressure(void);
 
     private:
 
@@ -80,12 +86,14 @@ class BMP085
 	int16_t mc;
 	int16_t md;
 
+	oss_t oss;
+
 	void readCalibrationData(void);
 
 	void writeRegister8(uint8_t reg, uint8_t value);
 	uint8_t readRegister8(uint8_t reg);
 	uint8_t fastRegister8(uint8_t reg);
-	int16_t readRegister16(uint8_t reg);
+	uint16_t readRegister16(uint8_t reg);
 };
 
 #endif

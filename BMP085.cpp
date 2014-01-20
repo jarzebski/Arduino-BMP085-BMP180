@@ -26,10 +26,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <Wire.h>
 #include <math.h>
+#include <util/delay.h>
 
 #include <BMP085.h>
 
-bool BMP085::begin()
+bool BMP085::begin(oss_t oversampling)
 {
     Wire.begin();
 
@@ -41,11 +42,25 @@ bool BMP085::begin()
 
     readCalibrationData();
 
+    oss = oversampling;
+
     return true;
 }
 
 
-// Read calibration data
+// Set oversampling value
+void BMP085::setOversampling(oss_t oversampling)
+{
+    oss = oversampling;
+}
+
+// Get oversampling value
+oss_t BMP085::getOversampling(void)
+{
+    return oss;
+}
+
+// Read calibration data (BMP085 datasheet, page 13, block 1)
 void BMP085::readCalibrationData(void)
 {
   ac1 = readRegister16(BMP085_REG_AC1);
@@ -59,6 +74,48 @@ void BMP085::readCalibrationData(void)
   mb = readRegister16(BMP085_REG_MB);
   mc = readRegister16(BMP085_REG_MC);
   md = readRegister16(BMP085_REG_MD);
+}
+
+// Read raw temperature (BMP085 datasheet, page 13, block 2)
+uint16_t BMP085::readRawTemperature(void)
+{
+    writeRegister8(BMP085_REG_CONTROL, BMP085_CMD_MEASURE_TEMP);
+
+    _delay_us(4500); // wait 4.5ms
+
+    return readRegister16(BMP085_REG_DATA);
+}
+
+// Read raw pressure (BMP085 datasheet, page 13, block 3)
+uint32_t BMP085::readRawPressure(void)
+{
+    uint32_t value;
+
+    writeRegister8(BMP085_REG_CONTROL, BMP085_CMD_MEASURE_PRESSURE_0 + (oss << 6));
+
+    if (oss == BMP085_OSS_ULTRA_LOW_POWER)
+    {
+	_delay_us(4500);
+    } else
+    if (oss == BMP085_OSS_STANDARD)
+    {
+	_delay_us(7500);
+    } else
+    if (oss == BMP085_OSS_HIGH_RES)
+    {
+	_delay_us(13500);
+    } else
+    {
+	_delay_us(25500);
+    }
+
+    value = readRegister16(BMP085_REG_DATA);
+    value <<= 8;
+    value |= readRegister8(BMP085_REG_DATA + 2);
+
+    value >>= (8 - oss);
+
+    return value;
 }
 
 // Write 8-bit to register
@@ -126,10 +183,10 @@ uint8_t BMP085::readRegister8(uint8_t reg)
     return value;
 }
 
-// Read 16-bit from register
-int16_t BMP085::readRegister16(uint8_t reg)
+// Read 16-bit from register (oops MSB, LSB)
+uint16_t BMP085::readRegister16(uint8_t reg)
 {
-    int16_t value;
+    uint16_t value;
     Wire.beginTransmission(BMP085_ADDRESS);
     #if ARDUINO >= 100
         Wire.write(reg);
@@ -142,11 +199,11 @@ int16_t BMP085::readRegister16(uint8_t reg)
     Wire.requestFrom(BMP085_ADDRESS, 2);
     while(!Wire.available()) {};
     #if ARDUINO >= 100
-        uint8_t vla = Wire.read();
         uint8_t vha = Wire.read();
+        uint8_t vla = Wire.read();
     #else
-        uint8_t vla = Wire.receive();
         uint8_t vha = Wire.receive();
+        uint8_t vla = Wire.receive();
     #endif;
     Wire.endTransmission();
 
