@@ -1,17 +1,22 @@
 /*
-    BMP085 / BMP180 Barometric Pressure & Temperature Sensor. Simple Example (Integer equations)
- Read more: TODO
- GIT: https://github.com/jarzebski/Arduino-BMP085
- Web: http://www.jarzebski.pl
- (c) 2014 by Korneliusz Jarzebski
- */
+    BMP085 / BMP180 Barometric Pressure & Temperature Sensor. Simple Example (Floating-point equations)
+    Read more: TODO
+    GIT: https://github.com/jarzebski/Arduino-BMP085
+    Web: http://www.jarzebski.pl
+    (c) 2014 by Korneliusz Jarzebski
+
+    From Weather Station Data Logger project
+    "Integer math results in stair-step, jumpy corrections as the input values
+    vary smoothly. This is due to round-off errors in the integer calculations.
+    The floating point math does not suffer from this problem and corrections
+    vary smoothly with changes in input values.|
+    http://wmrx00.sourceforge.net/Arduino/BMP085-Calcs.pdf
+*/
 
 #include <Wire.h>
 #include <BMP085.h>
 
 BMP085 bmp;
-
-double referencePressure;
 
 void setup() 
 {
@@ -33,10 +38,7 @@ void setup()
   // Enable or disable SOSS (Software oversampling)- Use with BMP085_OSS_ULTRA_HIGH_RES !
   // For applications where a low noise level is critical, averaging is recommended if the lower bandwidth is acceptable
   // Conversion time pressure: 76.5ms, RMS noise 0.02 hPA / 0.17 m
-  // bmp.setSoftwareOversampling(0);
-
-  // Get reference pressure for relative altitude
-  referencePressure = bmp.readPressure();
+  bmp.setSoftwareOversampling(1);
 
   // Check settings
   checkSettings();
@@ -57,39 +59,30 @@ void checkSettings()
 
 void loop()
 {
-  // Read raw values
-  int rawTemp = bmp.readRawTemperature();
-  uint32_t rawPressure = bmp.readRawPressure();
+  // Set you real altitude
+  // My location: Poland, Bytom, 8 floor
+  double myRealAltitude = 335;
 
   // Read true temperature & Pressure
-  double realTemperature = bmp.readTemperature();
-  long realPressure = bmp.readPressure();
+  double realTemperature = bmp.readFloatTemperature();
+  double realPressure = bmp.readFloatPressure();
 
-  // Calculate altitude
-  float absoluteAltitude = bmp.getAltitude(realPressure);
-  float relativeAltitude = bmp.getAltitude(realPressure, referencePressure);
+  // Calculate sealevel pressure
+  double seaLevelPressure = bmp.getSeaLevel(realPressure, myRealAltitude);
 
   Serial.println("--");
 
-  Serial.print(" rawTemp = ");
-  Serial.print(rawTemp);
-  Serial.print(", realTemp = ");
+  Serial.print("realTemp = ");
   Serial.print(realTemperature);
-  Serial.println(" *C");
+  Serial.print(" *C");
 
-  Serial.print(" rawPressure = ");
-  Serial.print(rawPressure);
   Serial.print(", realPressure = ");
-  Serial.print(realPressure);
-  Serial.println(" Pa");
+  Serial.print(realPressure/100);
+  Serial.print(" hPa");
 
-  Serial.print(" absoluteAltitude = ");
-  Serial.print(absoluteAltitude);
-  Serial.print(" m, relativeAltitude = ");
-  Serial.print(relativeAltitude);    
-  Serial.println(" m");
-
+  Serial.print(" seaLevelPressure = ");
+  Serial.print(seaLevelPressure/100);
+  Serial.println(" hPa");
 
   delay(1000);
 }
-

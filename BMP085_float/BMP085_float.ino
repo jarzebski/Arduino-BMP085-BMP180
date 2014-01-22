@@ -1,10 +1,17 @@
 /*
-    BMP085 / BMP180 Barometric Pressure & Temperature Sensor. Simple Example (Integer equations)
- Read more: TODO
- GIT: https://github.com/jarzebski/Arduino-BMP085
- Web: http://www.jarzebski.pl
- (c) 2014 by Korneliusz Jarzebski
- */
+    BMP085 / BMP180 Barometric Pressure & Temperature Sensor. Simple Example (Floating-point equations)
+    Read more: TODO
+    GIT: https://github.com/jarzebski/Arduino-BMP085
+    Web: http://www.jarzebski.pl
+    (c) 2014 by Korneliusz Jarzebski
+
+    From Weather Station Data Logger project
+    "Integer math results in stair-step, jumpy corrections as the input values
+    vary smoothly. This is due to round-off errors in the integer calculations.
+    The floating point math does not suffer from this problem and corrections
+    vary smoothly with changes in input values.|
+    http://wmrx00.sourceforge.net/Arduino/BMP085-Calcs.pdf
+*/
 
 #include <Wire.h>
 #include <BMP085.h>
@@ -33,10 +40,10 @@ void setup()
   // Enable or disable SOSS (Software oversampling)- Use with BMP085_OSS_ULTRA_HIGH_RES !
   // For applications where a low noise level is critical, averaging is recommended if the lower bandwidth is acceptable
   // Conversion time pressure: 76.5ms, RMS noise 0.02 hPA / 0.17 m
-  // bmp.setSoftwareOversampling(0);
+  // bmp.setSoftwareOversampling(1);
 
   // Get reference pressure for relative altitude
-  referencePressure = bmp.readPressure();
+  referencePressure = bmp.readFloatPressure();
 
   // Check settings
   checkSettings();
@@ -62,8 +69,8 @@ void loop()
   uint32_t rawPressure = bmp.readRawPressure();
 
   // Read true temperature & Pressure
-  double realTemperature = bmp.readTemperature();
-  long realPressure = bmp.readPressure();
+  double realTemperature = bmp.readFloatTemperature();
+  double realPressure = bmp.readFloatPressure();
 
   // Calculate altitude
   float absoluteAltitude = bmp.getAltitude(realPressure);
@@ -76,13 +83,13 @@ void loop()
   Serial.print(", realTemp = ");
   Serial.print(realTemperature);
   Serial.println(" *C");
-
+  
   Serial.print(" rawPressure = ");
   Serial.print(rawPressure);
   Serial.print(", realPressure = ");
   Serial.print(realPressure);
   Serial.println(" Pa");
-
+  
   Serial.print(" absoluteAltitude = ");
   Serial.print(absoluteAltitude);
   Serial.print(" m, relativeAltitude = ");
@@ -92,4 +99,3 @@ void loop()
 
   delay(1000);
 }
-

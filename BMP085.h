@@ -30,6 +30,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define BMP085_ADDRESS                (0x77)
 
 #define BMP085_REG_CHIP_ID            (0xD0)
+#define BMP085_REG_VERSION            (0xD1)
 #define BMP085_REG_SOFT_RESET         (0xE0)
 
 #define BMP085_REG_AC1                (0xAA)
@@ -64,32 +65,50 @@ typedef enum
 class BMP085
 {
     public:
+
 	bool begin(oss_t oss = BMP085_OSS_HIGH_RES);
+	uint16_t getVersion(void);
 
 	void setOversampling(oss_t oss);
 	oss_t getOversampling(void);
 
+	void setSoftwareOversampling(bool softwareOversampling);
+	bool getSoftwareOversampling(void);
+
 	uint16_t readRawTemperature(void);
-	uint32_t readRawPressure(void);
+	uint32_t readRawPressure(bool rawRegister = false);
+
+	double readTemperature(void);
+	double readFloatTemperature(void);
+
+	uint32_t readPressure(void);
+	double readFloatPressure(void);
+
+	double getAltitude(double pressure, double seaLevelPressure = 101325);
+	double getSeaLevel(double pressure, double altitude);
 
     private:
 
-	int16_t ac1;
-	int16_t ac2;
-	int16_t ac3;
-	uint16_t ac4;
-	uint16_t ac5;
-	uint16_t ac6;
-	int16_t b1;
-	int16_t b2;
-	int16_t mb;
-	int16_t mc;
-	int16_t md;
+	// Calibration data
+	int16_t ac1, ac2, ac3;
+	uint16_t ac4, ac5, ac6;
+	int16_t b1, b2;
+	int16_t mb, mc, md;
 
+	// Polynomials for Floating Point Pressure Calculation
+	double fc5,fc6,fmc,fmd,fx0,fx1,fx2,fy0,fy1,fy2,fp0,fp1,fp2;
+	
+	// Oversample
 	oss_t oss;
+	bool soss;
 
+	// Read calibration data
 	void readCalibrationData(void);
 
+	// Calculate Polynomials
+	void calculatePolynomials(void);
+
+	// Registers
 	void writeRegister8(uint8_t reg, uint8_t value);
 	uint8_t readRegister8(uint8_t reg);
 	uint8_t fastRegister8(uint8_t reg);
