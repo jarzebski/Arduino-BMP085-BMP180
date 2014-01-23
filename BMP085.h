@@ -55,10 +55,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 typedef enum
 {
-    BMP085_OSS_ULTRA_HIGH_RES   = 0x03,
-    BMP085_OSS_HIGH_RES         = 0x02,
-    BMP085_OSS_STANDARD         = 0x01,
-    BMP085_OSS_ULTRA_LOW_POWER  = 0x00
+    BMP085_ULTRA_HIGH_RES   = 0x03,
+    BMP085_HIGH_RES         = 0x02,
+    BMP085_STANDARD         = 0x01,
+    BMP085_ULTRA_LOW_POWER  = 0x00
 } oss_t;
 
 
@@ -66,7 +66,7 @@ class BMP085
 {
     public:
 
-	bool begin(oss_t oss = BMP085_OSS_HIGH_RES);
+	bool begin(oss_t oss = BMP085_HIGH_RES);
 	uint16_t getVersion(void);
 
 	void setOversampling(oss_t oss);

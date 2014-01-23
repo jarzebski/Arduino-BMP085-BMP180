@@ -162,15 +162,15 @@ uint32_t BMP085::readRawPressure(bool rawRegister)
 
     writeRegister8(BMP085_REG_CONTROL, BMP085_CMD_MEASURE_PRESSURE_0 + (oss << 6));
 
-    if (oss == BMP085_OSS_ULTRA_LOW_POWER)
+    if (oss == BMP085_ULTRA_LOW_POWER)
     {
 	_delay_ms(5);
     } else
-    if (oss == BMP085_OSS_STANDARD)
+    if (oss == BMP085_STANDARD)
     {
 	_delay_ms(8);
     } else
-    if (oss == BMP085_OSS_HIGH_RES)
+    if (oss == BMP085_HIGH_RES)
     {
 	_delay_ms(14);
     } else

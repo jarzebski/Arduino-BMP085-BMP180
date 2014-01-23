@@ -16,11 +16,11 @@ void setup()
   Serial.begin(115200);
 
   // Initialize BMP085 or BMP180 sensor
-  // Ultra high resolution: BMP085_OSS_ULTRA_HIGH_RES
-  // (default) High resolution: BMP085_OSS_HIGH_RES
-  // Standard: BMP085_OSS_STANDARD
-  // Ultra low power: BMP085_OSS_ULTRA_LOW_POWER
-  while(!bmp.begin(BMP085_OSS_ULTRA_HIGH_RES))
+  // Ultra high resolution: BMP085_ULTRA_HIGH_RES
+  // (default) High resolution: BMP085_HIGH_RES
+  // Standard: BMP085_STANDARD
+  // Ultra low power: BMP085_ULTRA_LOW_POWER
+  while(!bmp.begin(BMP085_ULTRA_HIGH_RES))
   {
     delay(500);
   }

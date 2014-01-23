@@ -25,17 +25,17 @@ void setup()
   // Initialize BMP085 or BMP180 sensor
   Serial.println("Initialize BMP085/BMP180 Serial");
 
-  // Ultra high resolution: BMP085_OSS_ULTRA_HIGH_RES
-  // (default) High resolution: BMP085_OSS_HIGH_RES
-  // Standard: BMP085_OSS_STANDARD
-  // Ultra low power: BMP085_OSS_ULTRA_LOW_POWER
-  while(!bmp.begin(BMP085_OSS_ULTRA_HIGH_RES))
+  // Ultra high resolution: BMP085_ULTRA_HIGH_RES
+  // (default) High resolution: BMP085_HIGH_RES
+  // Standard: BMP085_STANDARD
+  // Ultra low power: BMP085_ULTRA_LOW_POWER
+  while(!bmp.begin(BMP085_ULTRA_HIGH_RES))
   {
     Serial.println("Could not find a valid BMP085 or BMP180 sensor, check wiring!");
     delay(500);
   }
 
-  // Enable or disable SOSS (Software oversampling)- Use with BMP085_OSS_ULTRA_HIGH_RES !
+  // Enable or disable SOSS (Software oversampling)- Use with BMP085_ULTRA_HIGH_RES !
   // For applications where a low noise level is critical, averaging is recommended if the lower bandwidth is acceptable
   // Conversion time pressure: 76.5ms, RMS noise 0.02 hPA / 0.17 m
   bmp.setSoftwareOversampling(1);
