@@ -1,10 +1,10 @@
 /*
-    BMP085 / BMP180 Barometric Pressure & Temperature Sensor. Simple Example (Integer equations)
- Read more: TODO
- GIT: https://github.com/jarzebski/Arduino-BMP085
- Web: http://www.jarzebski.pl
- (c) 2014 by Korneliusz Jarzebski
- */
+  BMP085 / BMP180 Barometric Pressure & Temperature Sensor. Simple Example (Integer equations)
+  Read more: TODO
+  GIT: https://github.com/jarzebski/Arduino-BMP085
+  Web: http://www.jarzebski.pl
+  (c) 2014 by Korneliusz Jarzebski
+*/
 
 #include <Wire.h>
 #include <BMP085.h>
