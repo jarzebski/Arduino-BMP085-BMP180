@@ -1,7 +1,7 @@
 /*
   BMP085 / BMP180 Barometric Pressure & Temperature Sensor. Simple Example (Floating-point equations)
   Read more: TODO
-  GIT: https://github.com/jarzebski/Arduino-BMP085
+  GIT: https://github.com/jarzebski/Arduino-BMP085-BMP180
   Web: http://www.jarzebski.pl
   (c) 2014 by Korneliusz Jarzebski
 
@@ -9,7 +9,7 @@
   "Integer math results in stair-step, jumpy corrections as the input values
   vary smoothly. This is due to round-off errors in the integer calculations.
   The floating point math does not suffer from this problem and corrections
-  vary smoothly with changes in input values.|
+  vary smoothly with changes in input values."
   http://wmrx00.sourceforge.net/Arduino/BMP085-Calcs.pdf
 */
 
