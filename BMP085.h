@@ -1,7 +1,7 @@
 /*
 BMP085.h - Header file for the BMP085/BMP180 Barometric Pressure & Temperature Sensor Arduino Library.
 
-Version: 1.0.0
+Version: 1.0.1
 (c) 2014 Korneliusz Jarzebski
 www.jarzebski.pl
 
