@@ -36,9 +36,58 @@ void setup ()
   myPort.bufferUntil(10);
 }
 
-void drawChart(String title, String[] series, float[][] chart, int x, int y, int h, int min, int max, int step) 
+void drawChart(String title, String[] series, float[][] chart, int x, int y, int h, boolean symmetric, boolean fixed, int fixedMin, int fixedMax, int hlines) 
 {
   int actualColor = 0;
+  
+  int maxA = 0;
+  int maxB = 0;
+  int maxAB = 0;
+  
+  int min = 0;
+  int max = 0;
+  int step = 0;
+  int divide = 0;
+ 
+  if (fixed)
+  {
+    min = fixedMin;
+    max = fixedMax;
+    step = hlines;
+  } else
+  {
+    if (hlines > 2)
+    {
+      divide = (hlines - 2);
+    } else
+    {
+      divide = 1;
+    }
+      
+    if (symmetric)
+    {
+      maxA = (int)abs(getMin(chart));
+      maxB = (int)abs(getMax(chart));
+      maxAB = max(maxA, maxB);
+      step = (maxAB * 2) / divide;
+      min = -maxAB-step;
+      max = maxAB+step;
+    } else
+    {
+      min = (int)(getMin(chart));
+      max = (int)(getMax(chart));
+      
+      if ((max >= 0) && (min <= 0)) step = (abs(min) + abs(max)) / divide; 
+      if ((max < 0) && (min < 0)) step = abs(min - max) / divide; 
+      if ((max > 0) && (min > 0)) step = (max - min) / divide; 
+      
+      if (divide > 1)
+      {
+        min -= step;
+        max += step;
+      }
+    }
+  }
 
   pgChart = createGraphics((maxSamples*sampleStep)+50, h+60);
 
@@ -130,23 +179,26 @@ void draw()
 
   background(0);
 
-  drawChart("Pressure compare", compareSeries, pressureValues, 10, 10, 150, (int)getMin(pressureValues),  (int)getMax(pressureValues), 10);
-  drawChart("Temperature compare", compareSeries, temperatureValues, 10, 230, 150, (int)getMin(temperatureValues),  (int)getMax(temperatureValues), 1);
-  drawChart("Altitude compare", compareSeries, altitudeValues, 10, 450, 150, (int)getMin(altitudeValues),  (int)getMax(altitudeValues), 1);
+  drawChart("Pressure compare", compareSeries, pressureValues, 10, 10, 150, false, false, 0, 0, 4);
+  drawChart("Temperature compare", compareSeries, temperatureValues, 10, 230, 150, false, false, 0, 0, 2);
+  drawChart("Altitude compare", compareSeries, altitudeValues, 10, 450, 150, false, false, 0, 0, 2);
 }
 
 float getMin(float[][] chart)
 {
   float minValue = 0;
-  float[] testValues = new float[3];
+  float[] testValues = new float[chart.length];
   float testMin = 0;
 
   for (int i = 0; i < actualSample; i++)
   {
-    testValues[0] = chart[0][i];
-    testValues[1] = chart[1][i];
-    testValues[2] = chart[2][i];
+    for (int j = 0; j < testValues.length; j++)
+    {
+      testValues[j] = chart[j][i];
+    }
+    
     testMin = min(testValues);
+    
     if (i == 0)
     {
       minValue = testMin;
@@ -162,15 +214,18 @@ float getMin(float[][] chart)
 float getMax(float[][] chart)
 {
   float maxValue = 0;
-  float[] testValues = new float[3];
+  float[] testValues = new float[chart.length];
   float testMax = 0;
 
   for (int i = 0; i < actualSample; i++)
   {
-    testValues[0] = chart[0][i];
-    testValues[1] = chart[1][i];
-    testValues[2] = chart[2][i];
+    for (int j = 0; j < testValues.length; j++)
+    {
+      testValues[j] = chart[j][i];
+    }
+    
     testMax = max(testValues);
+
     if (i == 0)
     {
       maxValue = testMax;
