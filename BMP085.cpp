@@ -1,7 +1,7 @@
 /*
 BMP085.cpp - Class file for the BMP085/BMP180 Barometric Pressure & Temperature Sensor Arduino Library.
 
-Version: 1.0.1
+Version: 1.0.2
 (c) 2014 Korneliusz Jarzebski
 www.jarzebski.pl
 
@@ -36,7 +36,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <BMP085.h>
 
-bool BMP085::begin(oss_t oversampling)
+bool BMP085::begin(bmp085_oss_t oversampling)
 {
     Wire.begin();
 
@@ -56,13 +56,13 @@ bool BMP085::begin(oss_t oversampling)
 
 
 // Set oversampling value
-void BMP085::setOversampling(oss_t oversampling)
+void BMP085::setOversampling(bmp085_oss_t oversampling)
 {
     oss = oversampling;
 }
 
 // Get oversampling value
-oss_t BMP085::getOversampling(void)
+bmp085_oss_t BMP085::getOversampling(void)
 {
     return oss;
 }

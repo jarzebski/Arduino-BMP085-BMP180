@@ -1,7 +1,7 @@
 /*
 BMP085.h - Header file for the BMP085/BMP180 Barometric Pressure & Temperature Sensor Arduino Library.
 
-Version: 1.0.1
+Version: 1.0.2
 (c) 2014 Korneliusz Jarzebski
 www.jarzebski.pl
 
@@ -59,18 +59,17 @@ typedef enum
     BMP085_HIGH_RES         = 0x02,
     BMP085_STANDARD         = 0x01,
     BMP085_ULTRA_LOW_POWER  = 0x00
-} oss_t;
-
+} bmp085_oss_t;
 
 class BMP085
 {
     public:
 
-	bool begin(oss_t oss = BMP085_HIGH_RES);
+	bool begin(bmp085_oss_t oss = BMP085_HIGH_RES);
 	uint16_t getVersion(void);
 
-	void setOversampling(oss_t oss);
-	oss_t getOversampling(void);
+	void setOversampling(bmp085_oss_t oss);
+	bmp085_oss_t getOversampling(void);
 
 	void setSoftwareOversampling(bool softwareOversampling);
 	bool getSoftwareOversampling(void);
@@ -99,7 +98,7 @@ class BMP085
 	double fc5,fc6,fmc,fmd,fx0,fx1,fx2,fy0,fy1,fy2,fp0,fp1,fp2;
 	
 	// Oversample
-	oss_t oss;
+	bmp085_oss_t oss;
 	bool soss;
 
 	// Read calibration data
