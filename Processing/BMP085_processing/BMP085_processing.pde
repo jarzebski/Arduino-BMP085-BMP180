@@ -179,9 +179,9 @@ void draw()
 
   background(0);
 
-  drawChart("Pressure compare", compareSeries, pressureValues, 10, 10, 150, false, false, 0, 0, 4);
-  drawChart("Temperature compare", compareSeries, temperatureValues, 10, 230, 150, false, false, 0, 0, 2);
-  drawChart("Altitude compare", compareSeries, altitudeValues, 10, 450, 150, false, false, 0, 0, 2);
+  drawChart("Pressure compare [Pa]", compareSeries, pressureValues, 10, 10, 150, false, false, 0, 0, 4);
+  drawChart("Temperature compare [C]", compareSeries, temperatureValues, 10, 230, 150, false, false, 0, 0, 2);
+  drawChart("Altitude compare [m]", compareSeries, altitudeValues, 10, 450, 150, false, false, 0, 0, 2);
 }
 
 float getMin(float[][] chart)
