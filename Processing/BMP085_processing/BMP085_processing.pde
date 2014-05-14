@@ -1,6 +1,6 @@
 /*
     BMP085/BMP180 Triple Axis Accelerometer. Processing for BMP085_processing.ino
-    Read more: http://www.jarzebski.pl/arduino/czujniki-i-sensory/3-osiowy-akcelerometr-BMP085/BMP180.html
+    Read more: http://www.jarzebski.pl/arduino/czujniki-i-sensory/czujniki-cisnienia-bmp085-bmp180.html
     GIT: https://github.com/jarzebski/Arduino-BMP085-BMP180
     Web: http://www.jarzebski.pl
     (c) 2014 by Korneliusz Jarzebski

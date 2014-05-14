@@ -20,3 +20,8 @@ This library use floating-point equations from the Weather Station Data Logger p
 http://wmrx00.sourceforge.net/
 http://wmrx00.sourceforge.net/Arduino/BMP085-Calcs.pdf
 
+Read more
+---------
+
+http://www.jarzebski.pl/arduino/czujniki-i-sensory/czujniki-cisnienia-bmp085-bmp180.html
+
