@@ -1,5 +1,5 @@
 /*
-    BMP085/BMP180 Triple Axis Accelerometer. Processing for BMP085_processing.ino
+    BMP085/BMP180 Barometric Pressure & Temperature Sensor. Processing for BMP085_processing.ino
     Read more: http://www.jarzebski.pl/arduino/czujniki-i-sensory/czujniki-cisnienia-bmp085-bmp180.html
     GIT: https://github.com/jarzebski/Arduino-BMP085-BMP180
     Web: http://www.jarzebski.pl
