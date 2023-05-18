@@ -1,0 +1,16 @@
+{
+  "name": "Arduino-BMP085-BMP180",
+  "keywords": "BMP085, BMP180, sensor, temperature, pressure, i2c, wire",
+  "description": "Arduino library for BMP085-BMP180 barometric pressure & temperature sensor",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jarzebski/Arduino-BMP085-BMP180"
+  },
+  "authors": {
+    "name": "Korneliusz Jarzębski",
+    "url": "http://www.jarzebski.pl/"
+  },
+  "version": "1.0.2",
+  "frameworks": "arduino",
+  "platforms": "*"
+}
